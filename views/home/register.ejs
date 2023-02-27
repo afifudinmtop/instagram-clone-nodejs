@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background: #f0ecec">
+<html lang="en" style="background: #f0ecec; overflow: auto">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,6 +35,15 @@
     <link rel="stylesheet" href="/home/register.css" />
   </head>
   <body class="mx-auto px-5">
+    <!-- notif -->
+    <% if (pesan != "") { if (pesan == "ok") { %>
+    <div class="alert alert-success" role="alert">
+      Created Successfully, please login!
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger" role="alert"><%= pesan %></div>
+    <% }} %>
+
     <!-- logo ig -->
     <div class="mx-auto d-flex justify-content-center logo_ig_parent">
       <div class="logo_ig"></div>
@@ -171,7 +180,7 @@
       </div>
 
       <!-- login -->
-      <div class="mt-3 login_footer text-center">
+      <div class="mt-3 login_footer text-center pb-5">
         <span>Have an account? </span>
         <a href="/login" class="text-decoration-none">Log in</a>
       </div>

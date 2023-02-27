@@ -3,6 +3,7 @@ body {
   height: 100vh;
   width: 100vw;
   font-family: "Roboto", sans-serif;
+  overflow: auto;
 }
 
 .logo_ig_parent {

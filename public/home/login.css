@@ -20,14 +20,6 @@ body {
   display: inline-block;
 }
 
-.sub_judul {
-  color: #8e8e8e;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  text-align: center;
-}
-
 .btn_tombol_get {
   background: #0095f6;
   width: 300px;
@@ -35,7 +27,12 @@ body {
 }
 
 .logo_fb {
-  background-image: url("/img/2.png");
+  background-repeat: no-repeat;
+  background-position: -414px -259px;
+  height: 16px;
+  width: 16px;
+  background-image: url("/img/3.png");
+
   border: 0;
   display: inline-block;
   font: inherit;
@@ -46,11 +43,12 @@ body {
   position: relative;
   top: 3px;
   vertical-align: baseline;
-  background-size: 440px 411px;
-  background-position: -364px -329px;
-  background-repeat: no-repeat;
-  height: 16px;
-  width: 16px;
+}
+
+.text_fb {
+  color: #385185;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .text_or {
@@ -60,18 +58,16 @@ body {
   font-weight: 600;
 }
 
-.text_info {
-  color: #8e8e8e;
-  font-size: 12px;
-  text-align: center;
-  line-height: 16px;
-}
-
-.text_info a {
+.text_forgot {
   color: #00376b;
+  font-size: 12px;
 }
 
-.login_footer {
+.text_signup {
   font-size: 14px;
   color: #262626;
+}
+
+.text_signup a {
+  color: #0095f6;
 }
