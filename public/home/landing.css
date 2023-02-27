@@ -1,0 +1,51 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+}
+
+.logo_ig_parent {
+  padding-top: 40%;
+}
+
+.logo_ig {
+  background-image: url(/img/1.png);
+  background-position: 0px 0px;
+  background-size: 176px 181px;
+  width: 175px;
+  height: 51px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.text_middle {
+  font-size: 20px;
+}
+
+.btn_tombol_get {
+  background: #0095f6;
+  width: 300px;
+  font-size: 14px;
+}
+
+.text_bawah {
+  font-size: 14px;
+}
+
+.text_bawahx {
+  color: #0095f6;
+  cursor: pointer;
+}
+
+.from_meta {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.from_meta > img {
+  height: 26px;
+  width: 52px;
+}
