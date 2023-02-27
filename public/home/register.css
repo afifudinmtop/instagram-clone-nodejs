@@ -1,0 +1,76 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+}
+
+.logo_ig_parent {
+  padding-top: 20%;
+}
+
+.logo_ig {
+  background-image: url(/img/1.png);
+  background-position: 0px 0px;
+  background-size: 176px 181px;
+  width: 175px;
+  height: 51px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.sub_judul {
+  color: #8e8e8e;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: center;
+}
+
+.btn_tombol_get {
+  background: #0095f6;
+  width: 300px;
+  font-size: 14px;
+}
+
+.logo_fb {
+  background-image: url("/img/2.png");
+  border: 0;
+  display: inline-block;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  margin-right: 8px;
+  padding: 0;
+  position: relative;
+  top: 3px;
+  vertical-align: baseline;
+  background-size: 440px 411px;
+  background-position: -364px -329px;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.text_or {
+  color: #8e8e8e;
+  transform: translateY(50%);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.text_info {
+  color: #8e8e8e;
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.text_info a {
+  color: #00376b;
+}
+
+.login_footer {
+  font-size: 14px;
+  color: #262626;
+}
