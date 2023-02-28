@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const multer = require("multer");
-const upload = multer({ dest: "./public/uploads/" });
+const upload = multer({ dest: "./public" });
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 
@@ -135,6 +135,7 @@ app.post("/login", multer().none(), (req, res) => {
       // check pass
       const result = bcrypt.compareSync(password, rows[0].password);
       if (result) {
+        res.cookie("uuid", rows[0].uuid, { signed: true });
         res.redirect("/feed");
         connection.end();
       } else {
@@ -142,8 +143,6 @@ app.post("/login", multer().none(), (req, res) => {
         res.redirect("/login");
         connection.end();
       }
-
-      //    res.redirect("/register/?pesan=" + encodeURI("user exist!"));
     }
     // kalo user belum ada
     else {
@@ -156,7 +155,38 @@ app.post("/login", multer().none(), (req, res) => {
 
 // feed page
 app.get("/feed", (req, res) => {
-  res.send("welcome");
+  if (req.signedCookies["uuid"]) {
+    const data = [
+      {
+        user_uuid: "uuid1",
+        user_username: "user1",
+        user_img: "1.jpg",
+        post_uuid: "post_uuid1",
+        post_img: "9.jpg",
+        post_caption:
+          "Sudah siap menyambut bulan Maret dengan event-event keren di Surabaya?",
+        post_like: "37",
+        post_comment: "2",
+        post_ts: "2 DAYS AGO",
+      },
+      {
+        user_uuid: "uuid2",
+        user_username: "user2",
+        user_img: "2.jpg",
+        post_uuid: "post_uuid1",
+        post_img: "3.jpg",
+        post_caption: "post caption 2",
+        post_like: "1",
+        post_comment: "0",
+        post_ts: "20 HOURS AGO",
+      },
+    ];
+    res.render("feed/feed", {
+      data,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 // start at port
