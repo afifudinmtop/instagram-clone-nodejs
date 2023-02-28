@@ -88,3 +88,20 @@ body {
   font-weight: 400;
   color: #8e8e8e;
 }
+
+.profil_img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  border-top-color: #dbdbdb;
+  border-top-width: 1px;
+  border-top-style: solid;
+  width: 370px;
+  background-color: white;
+}

@@ -5,6 +5,7 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
+0 footer
 1 upload post
 2 edit post
 3 delete post
@@ -18,6 +19,12 @@ instagram clone using node.js as backend
 11 profile page
 12 follow
 13 unfollow
+14 search
+15 message
+16 reels
+17 bookmark
+18 tag
+19 mention
 ```
 
 ## Contributing

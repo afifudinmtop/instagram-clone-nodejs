@@ -73,6 +73,24 @@
       <img class="feed_img" src="/uploads/<%= x.post_img %>" />
     </a>
 
+    <!-- nav footer -->
+    <div class="d-flex justify-content-between py-2 px-3 my-auto">
+      <div class="d-flex">
+        <a class="text-decoration-none me-3" href="/like/">
+          <img src="/img/love.png" width="22px" height="22px" />
+        </a>
+        <a class="text-decoration-none me-3" href="/comment/">
+          <img src="/img/comment.png" width="22px" height="22px" />
+        </a>
+        <a class="text-decoration-none me-3" href="/share/">
+          <img src="/img/share.png" width="22px" height="22px" />
+        </a>
+      </div>
+      <a class="text-decoration-none" href="/saved/">
+        <img src="/img/saved.png" width="22px" height="22px" />
+      </a>
+    </div>
+
     <!-- post likes -->
     <a class="text-decoration-none" href="/post_like/?uuid=<%= x.post_uuid %>">
       <div class="post_like px-3 pt-2"><%= x.post_like %> likes</div>
@@ -102,5 +120,24 @@
     <div class="post_ts px-3 pt-1"><%= x.post_ts %></div>
 
     <% }) %>
+
+    <!-- nav footer -->
+    <div class="d-flex justify-content-between py-2 px-4 footer my-auto">
+      <a class="text-decoration-none" href="/feed/">
+        <img src="/img/home_selected.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/search/">
+        <img src="/img/search.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/reels/">
+        <img src="/img/reels.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/message/">
+        <img src="/img/message.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/profil/">
+        <img class="profil_img my-auto" src="/uploads/1.jpg" />
+      </a>
+    </div>
   </body>
 </html>
