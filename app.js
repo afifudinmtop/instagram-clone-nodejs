@@ -189,6 +189,130 @@ app.get("/feed", (req, res) => {
   }
 });
 
+// feed page
+app.get("/add", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    res.render("feed/add");
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// feed page
+app.get("/profil", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.signedCookies["uuid"];
+    let q = `select * from user where hapus is null and uuid='${uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admin",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+      console.log(rows[0].image);
+
+      res.render("profil/profil", {
+        username: rows[0].username,
+        first_name: rows[0].first_name,
+        last_name: rows[0].last_name,
+        image: rows[0].image,
+        posts: "40",
+        followers: "300",
+        following: "917",
+        bio: "la vie est belle",
+        list_post: [
+          {
+            post_uuid: "uuid1",
+            post_img: "1.jpg",
+          },
+          {
+            post_uuid: "uuid2",
+            post_img: "2.jpg",
+          },
+          {
+            post_uuid: "uuid3",
+            post_img: "3.jpg",
+          },
+          {
+            post_uuid: "uuid4",
+            post_img: "4.jpg",
+          },
+          {
+            post_uuid: "uuid5",
+            post_img: "5.jpg",
+          },
+          {
+            post_uuid: "uuid6",
+            post_img: "6.jpg",
+          },
+          {
+            post_uuid: "uuid7",
+            post_img: "7.jpg",
+          },
+          {
+            post_uuid: "uuid8",
+            post_img: "8.jpg",
+          },
+          {
+            post_uuid: "uuid9",
+            post_img: "9.jpg",
+          },
+          {
+            post_uuid: "uuid1",
+            post_img: "1.jpg",
+          },
+          {
+            post_uuid: "uuid2",
+            post_img: "2.jpg",
+          },
+          {
+            post_uuid: "uuid3",
+            post_img: "3.jpg",
+          },
+          {
+            post_uuid: "uuid4",
+            post_img: "4.jpg",
+          },
+          {
+            post_uuid: "uuid5",
+            post_img: "5.jpg",
+          },
+          {
+            post_uuid: "uuid6",
+            post_img: "6.jpg",
+          },
+          {
+            post_uuid: "uuid7",
+            post_img: "7.jpg",
+          },
+          {
+            post_uuid: "uuid8",
+            post_img: "8.jpg",
+          },
+          {
+            post_uuid: "uuid9",
+            post_img: "9.jpg",
+          },
+        ],
+      });
+    });
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);

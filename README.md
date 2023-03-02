@@ -5,7 +5,6 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
-0 footer
 1 upload post
 2 edit post
 3 delete post
