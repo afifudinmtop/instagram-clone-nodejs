@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2023 at 07:00 AM
+-- Generation Time: Mar 05, 2023 at 04:44 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -34,6 +34,7 @@ CREATE TABLE `user` (
   `password` text DEFAULT NULL,
   `first_name` text DEFAULT NULL,
   `last_name` text DEFAULT NULL,
+  `image` text DEFAULT NULL,
   `hapus` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -41,9 +42,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `uuid`, `username`, `password`, `first_name`, `last_name`, `hapus`) VALUES
-(1, '151c0705-e7e5-4587-9c8a-c0dc0040dec7', 'apip', '$2a$10$YEXAt.mVdFeqigsgYtuepOKItsKVq7vb.qXNdC8gY9N7Hc8Y5Uyja', 'apip', 'udin', NULL),
-(2, '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'apip2', '$2a$10$UDargiCNl30NRSxE51sRo.U6g20DFQTKZhjNS8IYddt0jqzjo2eCW', 'apip2', 'udin2', NULL);
+INSERT INTO `user` (`id`, `uuid`, `username`, `password`, `first_name`, `last_name`, `image`, `hapus`) VALUES
+(1, '151c0705-e7e5-4587-9c8a-c0dc0040dec7', 'apip', '$2a$10$YEXAt.mVdFeqigsgYtuepOKItsKVq7vb.qXNdC8gY9N7Hc8Y5Uyja', 'apip', 'udin', NULL, NULL),
+(2, '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'apip2', '$2a$10$UDargiCNl30NRSxE51sRo.U6g20DFQTKZhjNS8IYddt0jqzjo2eCW', 'apip2', 'udin2', NULL, NULL),
+(3, '3955dd0e-c436-452c-8a17-a338e0814e0d', 'apip3', '$2a$10$b1gBumthObueZPN2ealff.PWep8JeuPVV1uI/OF1jdjdgwU66t.AW', 'apip3', 'udin3', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -63,7 +65,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

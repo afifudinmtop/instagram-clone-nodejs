@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const multer = require("multer");
-const upload = multer({ dest: "./public" });
+const upload = multer({ dest: "./public/uploads" });
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 
@@ -61,7 +61,7 @@ app.post("/register", multer().none(), (req, res) => {
 
   const connection = mysql.createConnection({
     host: "localhost",
-    user: "admin",
+    user: "admininstagram",
     password: "admininstagram",
     database: "instagram-clone-nodejs",
   });
@@ -118,7 +118,7 @@ app.post("/login", multer().none(), (req, res) => {
 
   const connection = mysql.createConnection({
     host: "localhost",
-    user: "admin",
+    user: "admininstagram",
     password: "admininstagram",
     database: "instagram-clone-nodejs",
   });
@@ -201,7 +201,7 @@ app.get("/add", (req, res) => {
   }
 });
 
-// feed page
+// profil page
 app.get("/profil", (req, res) => {
   // kalau sudah login
   if (req.signedCookies["uuid"]) {
@@ -210,7 +210,7 @@ app.get("/profil", (req, res) => {
 
     const connection = mysql.createConnection({
       host: "localhost",
-      user: "admin",
+      user: "admininstagram",
       password: "admininstagram",
       database: "instagram-clone-nodejs",
     });
@@ -219,7 +219,6 @@ app.get("/profil", (req, res) => {
 
     connection.query(q, (err, rows, fields) => {
       if (err) throw err;
-      console.log(rows[0].image);
 
       res.render("profil/profil", {
         username: rows[0].username,
@@ -311,6 +310,90 @@ app.get("/profil", (req, res) => {
   else {
     res.redirect("/login");
   }
+});
+
+// setting page
+app.get("/setting", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.signedCookies["uuid"];
+    let q = `select * from user where hapus is null and uuid='${uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      res.render("profil/setting", {
+        username: rows[0].username,
+        first_name: rows[0].first_name,
+        last_name: rows[0].last_name,
+        image: rows[0].image,
+        bio: rows[0].bio,
+      });
+    });
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// save_setting api
+app.post("/save_setting", upload.single("file"), (req, res) => {
+  const uuid = uuidv4();
+  const uuid_user = req.signedCookies["uuid"];
+  const bio = req.body.bio;
+  let q;
+
+  // No file was uploaded
+  if (!req.file) {
+    q = `update user set bio='${bio}' where uuid='${uuid_user}'`;
+  }
+  // file exist
+  else {
+    const file_extension = req.file.originalname.split(".")[1];
+    const filename = uuid + "." + file_extension;
+
+    // di rename
+    fs.renameSync(
+      `./public/uploads/${req.file.filename}`,
+      `./public/uploads/${filename}`
+    );
+
+    q = `update user set image='${filename}', bio='${bio}' `;
+    q += `where uuid='${uuid_user}'`;
+  }
+
+  // set connection database
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.redirect("/profil");
+    connection.end();
+  });
+});
+
+// logout page
+app.get("/logout", (req, res) => {
+  res.clearCookie("uuid", { signed: true, expires: new Date(0) });
+  res.redirect("/");
 });
 
 // start at port

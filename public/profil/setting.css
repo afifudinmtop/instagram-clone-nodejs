@@ -1,0 +1,80 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+.logo_arrow {
+  background-image: url("/img/arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  transform: rotate(270deg);
+}
+
+.header_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.user_image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info1_username {
+  font-size: 16px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.custom-file-upload {
+  color: #0095f6;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bio_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.btn_tombol_get {
+  background: #0095f6;
+  font-size: 14px;
+}
+
+.profil_img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  border-top-color: #dbdbdb;
+  border-top-width: 1px;
+  border-top-style: solid;
+  width: 370px;
+  background-color: white;
+}

@@ -57,15 +57,17 @@
 
       <div class="ps-4 flex-fill">
         <div class="info1_username"><%= username %></div>
-        <div class="edit_profile text-center p-1 rounded mt-2 apip_pointer">
-          Edit Profile
-        </div>
+        <a class="text-decoration-none" href="/setting/">
+          <div class="edit_profile text-center p-1 rounded mt-2 apip_pointer">
+            Edit Profile
+          </div>
+        </a>
       </div>
     </div>
 
     <!-- info 2 -->
     <div class="px-3">
-      <div class="info2_username"><%= username %></div>
+      <div class="info2_username"><%= first_name %> <%= last_name %></div>
       <div class="info2_bio"><%= bio %></div>
     </div>
 
