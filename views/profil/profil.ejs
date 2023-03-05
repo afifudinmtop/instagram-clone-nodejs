@@ -91,10 +91,10 @@
     <div class="row mx-0 px-0" style="padding-bottom: 45px">
       <% list_post.forEach(x => { %>
       <a
-        href="/post_detail/?uuid=<%= x.post_uuid %>"
+        href="/post_detail/?uuid=<%= x.uuid %>"
         class="list_post col-4 mx-0 p-1"
       >
-        <img src="/uploads/<%= x.post_img %>" />
+        <img src="/uploads/<%= x.image %>" />
       </a>
       <% }) %>
     </div>

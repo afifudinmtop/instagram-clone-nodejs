@@ -44,6 +44,23 @@
         <span class="new_post">New post</span>
         <button class="button_submit" type="submit">Share</button>
       </div>
+
+      <!-- field -->
+      <div class="d-flex p-3">
+        <textarea
+          class="flex-fill me-3 border-0"
+          rows="3"
+          name="caption"
+          id="caption"
+        ></textarea>
+
+        <input name="image" type="text" class="d-none" value="<%= image %>" />
+        <img class="user_image my-auto" src="/uploads/<%= image %>" />
+      </div>
     </form>
+
+    <script>
+      document.getElementById("caption").focus();
+    </script>
   </body>
 </html>

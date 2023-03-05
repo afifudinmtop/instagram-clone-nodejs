@@ -35,3 +35,9 @@ body {
   font-weight: 600;
   color: #262626;
 }
+
+.user_image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}

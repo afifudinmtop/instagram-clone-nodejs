@@ -189,16 +189,53 @@ app.get("/feed", (req, res) => {
   }
 });
 
-// feed page
+// add page
 app.get("/add", (req, res) => {
+  // redirect kalo gk ada image
+  if (!req.signedCookies["image"]) {
+    res.redirect("/feed");
+  }
+
+  // set image then clear cookie
+  const image = req.signedCookies["image"];
+  res.clearCookie("image", { signed: true, expires: new Date(0) });
+
   // kalau sudah login
   if (req.signedCookies["uuid"]) {
-    res.render("feed/add");
+    res.render("feed/add", {
+      image,
+    });
   }
   // kalau belum login
   else {
     res.redirect("/login");
   }
+});
+
+// add api
+app.post("/add", multer().none(), (req, res) => {
+  const caption = req.body.caption;
+  const image = req.body.image;
+  const uuid_user = req.signedCookies["uuid"];
+  const uuid = uuidv4();
+
+  let q = `insert into post (uuid, user, image, caption) `;
+  q += `values ('${uuid}', '${uuid_user}', '${image}', '${caption}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect("/profil");
+    connection.end();
+  });
 });
 
 // profil page
@@ -207,6 +244,7 @@ app.get("/profil", (req, res) => {
   if (req.signedCookies["uuid"]) {
     const uuid = req.signedCookies["uuid"];
     let q = `select * from user where hapus is null and uuid='${uuid}'`;
+    let q_list = `select * from post where hapus is null and user='${uuid}'`;
 
     const connection = mysql.createConnection({
       host: "localhost",
@@ -220,89 +258,28 @@ app.get("/profil", (req, res) => {
     connection.query(q, (err, rows, fields) => {
       if (err) throw err;
 
-      res.render("profil/profil", {
-        username: rows[0].username,
-        first_name: rows[0].first_name,
-        last_name: rows[0].last_name,
-        image: rows[0].image,
-        posts: "40",
-        followers: "300",
-        following: "917",
-        bio: "la vie est belle",
-        list_post: [
-          {
-            post_uuid: "uuid1",
-            post_img: "1.jpg",
-          },
-          {
-            post_uuid: "uuid2",
-            post_img: "2.jpg",
-          },
-          {
-            post_uuid: "uuid3",
-            post_img: "3.jpg",
-          },
-          {
-            post_uuid: "uuid4",
-            post_img: "4.jpg",
-          },
-          {
-            post_uuid: "uuid5",
-            post_img: "5.jpg",
-          },
-          {
-            post_uuid: "uuid6",
-            post_img: "6.jpg",
-          },
-          {
-            post_uuid: "uuid7",
-            post_img: "7.jpg",
-          },
-          {
-            post_uuid: "uuid8",
-            post_img: "8.jpg",
-          },
-          {
-            post_uuid: "uuid9",
-            post_img: "9.jpg",
-          },
-          {
-            post_uuid: "uuid1",
-            post_img: "1.jpg",
-          },
-          {
-            post_uuid: "uuid2",
-            post_img: "2.jpg",
-          },
-          {
-            post_uuid: "uuid3",
-            post_img: "3.jpg",
-          },
-          {
-            post_uuid: "uuid4",
-            post_img: "4.jpg",
-          },
-          {
-            post_uuid: "uuid5",
-            post_img: "5.jpg",
-          },
-          {
-            post_uuid: "uuid6",
-            post_img: "6.jpg",
-          },
-          {
-            post_uuid: "uuid7",
-            post_img: "7.jpg",
-          },
-          {
-            post_uuid: "uuid8",
-            post_img: "8.jpg",
-          },
-          {
-            post_uuid: "uuid9",
-            post_img: "9.jpg",
-          },
-        ],
+      // cari data user
+      const username = rows[0].username;
+      const first_name = rows[0].first_name;
+      const last_name = rows[0].last_name;
+      const image = rows[0].image;
+      const bio = rows[0].bio;
+
+      // cari data post user
+      connection.query(q_list, (err2, rows2, fields2) => {
+        const list_post = rows2;
+
+        res.render("profil/profil", {
+          username,
+          first_name,
+          last_name,
+          image,
+          posts: "40",
+          followers: "300",
+          following: "917",
+          bio,
+          list_post,
+        });
       });
     });
   }
@@ -394,6 +371,22 @@ app.post("/save_setting", upload.single("file"), (req, res) => {
 app.get("/logout", (req, res) => {
   res.clearCookie("uuid", { signed: true, expires: new Date(0) });
   res.redirect("/");
+});
+
+// add_middleware api
+app.post("/add_middleware", upload.single("file"), (req, res) => {
+  const uuid = uuidv4();
+  const file_extension = req.file.originalname.split(".")[1];
+  const filename = uuid + "." + file_extension;
+
+  // di rename
+  fs.renameSync(
+    `./public/uploads/${req.file.filename}`,
+    `./public/uploads/${filename}`
+  );
+
+  res.cookie("image", filename, { signed: true });
+  res.redirect("/add");
 });
 
 // start at port
