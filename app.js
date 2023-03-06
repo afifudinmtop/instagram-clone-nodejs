@@ -244,7 +244,7 @@ app.get("/profil", (req, res) => {
   if (req.signedCookies["uuid"]) {
     const uuid = req.signedCookies["uuid"];
     let q = `select * from user where hapus is null and uuid='${uuid}'`;
-    let q_list = `select * from post where hapus is null and user='${uuid}'`;
+    let q_list = `select * from post where hapus is null and user='${uuid}' order by id desc`;
 
     const connection = mysql.createConnection({
       host: "localhost",
