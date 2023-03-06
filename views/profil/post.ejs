@@ -102,27 +102,27 @@
       <!-- post ts -->
       <div class="post_ts px-3 pt-1"><%= x.ts %></div>
 
-      <!-- nav footer -->
-      <div class="d-flex justify-content-between py-2 px-4 footer my-auto">
-        <a class="text-decoration-none" href="/feed/">
-          <img src="/img/home_selected.png" width="24px" height="24px" />
-        </a>
-        <a class="text-decoration-none" href="/search/">
-          <img src="/img/search.png" width="24px" height="24px" />
-        </a>
-        <a class="text-decoration-none" href="/reels/">
-          <img src="/img/reels.png" width="24px" height="24px" />
-        </a>
-        <a class="text-decoration-none" href="/message/">
-          <img src="/img/message.png" width="24px" height="24px" />
-        </a>
-        <a class="text-decoration-none" href="/profil/">
-          <img class="profil_img my-auto" src="/uploads/<%= x.user_image %>" />
-        </a>
-      </div>
-
       <!-- body feed loop end -->
       <% }) %>
+    </div>
+
+    <!-- nav footer -->
+    <div class="d-flex justify-content-between py-2 px-4 footer my-auto">
+      <a class="text-decoration-none" href="/feed/">
+        <img src="/img/home_selected.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/search/">
+        <img src="/img/search.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/reels/">
+        <img src="/img/reels.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/message/">
+        <img src="/img/message.png" width="24px" height="24px" />
+      </a>
+      <a class="text-decoration-none" href="/profil/">
+        <img class="profil_img my-auto" src="/uploads/<%= profil[0].image %>" />
+      </a>
     </div>
   </body>
 </html>

@@ -437,9 +437,31 @@ app.get("/post_detail", (req, res) => {
 
     connection.query(q, (err, rows, fields) => {
       if (err) throw err;
-      const data = rows;
-      res.render("profil/post", {
-        data,
+
+      let data = [];
+      rows.forEach((x) => {
+        const ts = timeDifference(x.ts);
+        let x2 = {
+          uuid: x.uuid,
+          user: x.user,
+          image: x.image,
+          caption: x.caption,
+          ts,
+          username: x.username,
+          user_image: x.user_image,
+        };
+        data.push(x2);
+      });
+
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("profil/post", {
+          data,
+          profil,
+        });
       });
     });
   }
