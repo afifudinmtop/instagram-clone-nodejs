@@ -418,13 +418,16 @@ app.post("/add_middleware", upload.single("file"), (req, res) => {
 app.get("/post_detail", (req, res) => {
   // kalo uda login
   if (req.signedCookies["uuid"]) {
-    // let q = `select * from post where uuid='${req.query.uuid}'`;
-
     let q = `select post.uuid, post.user, post.image, post.caption, post.ts,`;
-    q += ` user.username, user.image as user_image`;
-    q += ` from post inner join user`;
-    q += ` on post.user=user.uuid`;
-    q += ` where post.uuid='${req.query.uuid}'`;
+    q += ` user.username, user.image as user_image,`;
+
+    // kalao ada return 'lovex.png', else return 'love.png'
+    q += ` IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex`;
+
+    q += ` FROM post`;
+    q += ` INNER JOIN user ON post.user = user.uuid`;
+    q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
+    q += ` WHERE post.uuid = '${req.query.uuid}'`;
 
     const connection = mysql.createConnection({
       host: "localhost",
@@ -449,6 +452,7 @@ app.get("/post_detail", (req, res) => {
           ts,
           username: x.username,
           user_image: x.user_image,
+          likex: x.likex,
         };
         data.push(x2);
       });
@@ -469,6 +473,32 @@ app.get("/post_detail", (req, res) => {
   else {
     res.redirect("/login");
   }
+});
+
+// likes middleware
+app.post("/likes", multer().none(), (req, res) => {
+  const uuid_post = req.body.uuid_post;
+  const uuid_user = req.signedCookies["uuid"];
+  const uuid = uuidv4();
+
+  let q = `insert into likes (uuid, user, post) `;
+  q += `values ('${uuid}', '${uuid_user}', '${uuid_post}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.send("ok");
+    connection.end();
+  });
 });
 
 // start at port
