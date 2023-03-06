@@ -68,76 +68,67 @@
       </div>
     </div>
 
-    <!-- body feed -->
-    <% data.forEach(x => { %>
-    <!-- post head -->
-    <a class="text-decoration-none" href="/user/?uuid=<%= x.user_uuid %>">
-      <div class="d-flex justify-content-between p-3">
-        <div class="d-flex">
-          <img class="user_img my-auto" src="/uploads/<%= x.user_img %>" />
-          <span class="user_username my-auto ms-2">
-            <%= x.user_username %>
-          </span>
+    <!-- body feed loop -->
+    <div class="pb-5">
+      <% list_post.forEach(x => { %>
+      <!-- post head -->
+      <a class="text-decoration-none" href="/user/?uuid=<%= x.user %>">
+        <div class="d-flex justify-content-between p-3">
+          <div class="d-flex">
+            <img class="user_img my-auto" src="/uploads/<%= x.user_image %>" />
+            <span class="user_username my-auto ms-2"><%= x.username %></span>
+          </div>
+          <img class="my-auto" width="24px" height="24px" src="/img/3dot.png" />
         </div>
-        <img class="my-auto" width="24px" height="24px" src="/img/3dot.png" />
-      </div>
-    </a>
-
-    <!-- post img -->
-    <a
-      class="text-decoration-none"
-      href="/post_detail/?uuid=<%= x.post_uuid %>"
-    >
-      <img class="feed_img" src="/uploads/<%= x.post_img %>" />
-    </a>
-
-    <!-- nav footer -->
-    <div class="d-flex justify-content-between py-2 px-3 my-auto">
-      <div class="d-flex">
-        <a class="text-decoration-none me-3" href="/like/">
-          <img src="/img/love.png" width="22px" height="22px" />
-        </a>
-        <a class="text-decoration-none me-3" href="/comment/">
-          <img src="/img/comment.png" width="22px" height="22px" />
-        </a>
-        <a class="text-decoration-none me-3" href="/share/">
-          <img src="/img/share.png" width="22px" height="22px" />
-        </a>
-      </div>
-      <a class="text-decoration-none" href="/saved/">
-        <img src="/img/saved.png" width="22px" height="22px" />
       </a>
-    </div>
 
-    <!-- post likes -->
-    <a class="text-decoration-none" href="/post_like/?uuid=<%= x.post_uuid %>">
-      <div class="post_like px-3 pt-2"><%= x.post_like %> likes</div>
-    </a>
+      <!-- post img -->
+      <a class="text-decoration-none" href="/post_detail/?uuid=<%= x.uuid %>">
+        <img class="feed_img" src="/uploads/<%= x.image %>" />
+      </a>
 
-    <!-- post caption -->
-    <div class="post_caption px-3 pt-1">
-      <a class="text-decoration-none" href="/user/?uuid=<%= x.user_uuid %>">
-        <span class="post_caption_username"><%= x.user_username %> </span></a
-      >
-      <span class="post_caption_body"><%= x.post_caption %></span>
-    </div>
-
-    <!-- post comment -->
-    <% if (parseInt(x.post_comment) > 0) { %>
-    <a
-      class="text-decoration-none"
-      href="/post_comment/?uuid=<%= x.post_uuid %>"
-    >
-      <div class="post_comment px-3 pt-1">
-        view all <%= x.post_like %> comments
+      <!-- nav footer -->
+      <div class="d-flex justify-content-between py-2 px-3 my-auto">
+        <div class="d-flex">
+          <a class="text-decoration-none me-3" href="/like/">
+            <img src="/img/love.png" width="22px" height="22px" />
+          </a>
+          <a class="text-decoration-none me-3" href="/comment/">
+            <img src="/img/comment.png" width="22px" height="22px" />
+          </a>
+          <a class="text-decoration-none me-3" href="/share/">
+            <img src="/img/share.png" width="22px" height="22px" />
+          </a>
+        </div>
+        <a class="text-decoration-none" href="/saved/">
+          <img src="/img/saved.png" width="22px" height="22px" />
+        </a>
       </div>
-    </a>
-    <% } %>
 
-    <!-- post ts -->
-    <div class="post_ts px-3 pt-1"><%= x.post_ts %></div>
+      <!-- post likes -->
+      <a class="text-decoration-none" href="/post_like/?uuid=<%= x.uuid %>">
+        <div class="post_like px-3 pt-2">70 likes</div>
+      </a>
 
-    <% }) %>
+      <!-- post caption -->
+      <div class="post_caption px-3 pt-1">
+        <a class="text-decoration-none" href="/user/?uuid=<%= x.user %>">
+          <span class="post_caption_username"><%= x.username %> </span></a
+        >
+        <span class="post_caption_body"><%= x.caption %></span>
+      </div>
+
+      <!-- post comment -->
+      <a class="text-decoration-none" href="/post_comment/?uuid=<%= x.uuid %>">
+        <div class="post_comment px-3 pt-1">view all 0 comments</div>
+      </a>
+
+      <!-- post ts -->
+      <div class="post_ts px-3 pt-1"><%= x.ts %></div>
+
+      <!-- body feed loop end -->
+      <% }) %>
+    </div>
 
     <!-- nav footer -->
     <div class="d-flex justify-content-between py-2 px-4 footer my-auto">
@@ -154,7 +145,7 @@
         <img src="/img/message.png" width="24px" height="24px" />
       </a>
       <a class="text-decoration-none" href="/profil/">
-        <img class="profil_img my-auto" src="/uploads/1.jpg" />
+        <img class="profil_img my-auto" src="/uploads/<%= profil[0].image %>" />
       </a>
     </div>
   </body>

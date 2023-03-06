@@ -155,36 +155,54 @@ app.post("/login", multer().none(), (req, res) => {
 
 // feed page
 app.get("/feed", (req, res) => {
+  // kalo uda login
   if (req.signedCookies["uuid"]) {
-    const data = [
-      {
-        user_uuid: "uuid1",
-        user_username: "user1",
-        user_img: "1.jpg",
-        post_uuid: "post_uuid1",
-        post_img: "9.jpg",
-        post_caption:
-          "Sudah siap menyambut bulan Maret dengan event-event keren di Surabaya?",
-        post_like: "37",
-        post_comment: "2",
-        post_ts: "2 DAYS AGO",
-      },
-      {
-        user_uuid: "uuid2",
-        user_username: "user2",
-        user_img: "2.jpg",
-        post_uuid: "post_uuid1",
-        post_img: "3.jpg",
-        post_caption: "post caption 2",
-        post_like: "1",
-        post_comment: "0",
-        post_ts: "20 HOURS AGO",
-      },
-    ];
-    res.render("feed/feed", {
-      data,
+    let q = `SELECT post.uuid, post.user, post.image, post.caption, post.ts,`;
+    q += ` user.username, user.image as user_image`;
+    q += ` FROM post INNER JOIN user`;
+    q += ` ON post.user=user.uuid`;
+    q += ` WHERE post.hapus is null order by post.id desc`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
     });
-  } else {
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+      let list_post = [];
+      rows.forEach((x) => {
+        const ts = timeDifference(x.ts);
+        let x2 = {
+          uuid: x.uuid,
+          user: x.user,
+          image: x.image,
+          caption: x.caption,
+          ts,
+          username: x.username,
+          user_image: x.user_image,
+        };
+        list_post.push(x2);
+      });
+
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("feed/feed", {
+          list_post,
+          profil,
+        });
+      });
+    });
+  }
+  // kalo belum login
+  else {
     res.redirect("/login");
   }
 });
@@ -393,3 +411,27 @@ app.post("/add_middleware", upload.single("file"), (req, res) => {
 app.listen(port, () => {
   console.log(`running on port ${port}`);
 });
+
+// to give output like 1 hour ago, 2 days ago, etc
+function timeDifference(timestamp) {
+  const now = new Date();
+  const diff = now - new Date(timestamp);
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const weeks = Math.floor(days / 7);
+
+  if (weeks > 0) {
+    return weeks + " week" + (weeks == 1 ? "" : "s") + " ago";
+  } else if (days > 0) {
+    return days + " day" + (days == 1 ? "" : "s") + " ago";
+  } else if (hours > 0) {
+    return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
+  } else if (minutes > 0) {
+    return minutes + " minute" + (minutes == 1 ? "" : "s") + " ago";
+  } else {
+    return seconds + " second" + (seconds == 1 ? "" : "s") + " ago";
+  }
+}
