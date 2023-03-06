@@ -1,0 +1,100 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+.logo_arrow {
+  background-image: url("/img/arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  transform: rotate(270deg);
+}
+
+.header_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.user_img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user_username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.feed_img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.post_like {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.post_caption_username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.post_caption_body {
+  font-size: 14px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.post_comment {
+  font-size: 14px;
+  font-weight: 400;
+  color: #8e8e8e;
+}
+
+.post_ts {
+  font-size: 10px;
+  font-weight: 400;
+  color: #8e8e8e;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  border-top-color: #dbdbdb;
+  border-top-width: 1px;
+  border-top-style: solid;
+  width: 370px;
+  background-color: white;
+}
+
+.profil_img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -414,6 +414,41 @@ app.post("/add_middleware", upload.single("file"), (req, res) => {
   res.redirect("/add");
 });
 
+// post_detail page
+app.get("/post_detail", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    // let q = `select * from post where uuid='${req.query.uuid}'`;
+
+    let q = `select post.uuid, post.user, post.image, post.caption, post.ts,`;
+    q += ` user.username, user.image as user_image`;
+    q += ` from post inner join user`;
+    q += ` on post.user=user.uuid`;
+    q += ` where post.uuid='${req.query.uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+      const data = rows;
+      res.render("profil/post", {
+        data,
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);
