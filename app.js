@@ -23,7 +23,14 @@ app.use(express.static("public"));
 
 // landing page
 app.get("/", (req, res) => {
-  res.render("home/landing");
+  // kalo udah login
+  if (req.signedCookies["uuid"]) {
+    res.redirect("/feed");
+  }
+  // kalo belum login
+  else {
+    res.render("home/landing");
+  }
 });
 
 // register page
