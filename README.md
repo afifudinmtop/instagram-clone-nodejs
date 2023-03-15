@@ -6,7 +6,6 @@ instagram clone using node.js as backend
 
 ```javascript
 display like
-un-like
 
 display comments
 insert comments

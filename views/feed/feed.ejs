@@ -89,9 +89,15 @@
       <!-- nav footer -->
       <div class="d-flex justify-content-between py-2 px-3 my-auto">
         <div class="d-flex">
-          <a class="text-decoration-none me-3" href="/like/">
-            <img src="/img/love.png" width="22px" height="22px" />
-          </a>
+          <img
+            id="likes_<%= x.uuid %>"
+            class="me-3 apip_pointer"
+            onclick="likes('<%= x.uuid %>')"
+            src="/img/<%= x.likex %>"
+            width="22px"
+            height="22px"
+          />
+
           <a class="text-decoration-none me-3" href="/comment/">
             <img src="/img/comment.png" width="22px" height="22px" />
           </a>
@@ -147,5 +153,36 @@
         <img class="profil_img my-auto" src="/uploads/<%= profil[0].image %>" />
       </a>
     </div>
+
+    <script>
+      function likes(uuid_post) {
+        let data_upload = new FormData();
+        data_upload.append("uuid_post", uuid_post);
+
+        // dislike
+        if (
+          document
+            .getElementById(`likes_${uuid_post}`)
+            .src.includes("/img/lovex.png")
+        ) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`likes_${uuid_post}`).src = "/img/love.png";
+          };
+          xhttp.open("POST", "/dislike", true);
+          xhttp.send(data_upload);
+        }
+        // like
+        else {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`likes_${uuid_post}`).src =
+              "/img/lovex.png";
+          };
+          xhttp.open("POST", "/likes", true);
+          xhttp.send(data_upload);
+        }
+      }
+    </script>
   </body>
 </html>

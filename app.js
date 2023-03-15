@@ -165,9 +165,16 @@ app.get("/feed", (req, res) => {
   // kalo uda login
   if (req.signedCookies["uuid"]) {
     let q = `SELECT post.uuid, post.user, post.image, post.caption, post.ts,`;
-    q += ` user.username, user.image as user_image`;
-    q += ` FROM post INNER JOIN user`;
-    q += ` ON post.user=user.uuid`;
+    q += ` user.username, user.image as user_image, `;
+
+    // kalao ada return 'lovex.png', else return 'love.png'
+    q += ` IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex`;
+
+    q += ` FROM post INNER JOIN user ON post.user=user.uuid`;
+
+    // likes
+    q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
+
     q += ` WHERE post.hapus is null order by post.id desc`;
 
     const connection = mysql.createConnection({
@@ -192,6 +199,7 @@ app.get("/feed", (req, res) => {
           ts,
           username: x.username,
           user_image: x.user_image,
+          likex: x.likex,
         };
         list_post.push(x2);
       });
@@ -558,6 +566,30 @@ app.post("/likes", multer().none(), (req, res) => {
 
   let q = `insert into likes (uuid, user, post) `;
   q += `values ('${uuid}', '${uuid_user}', '${uuid_post}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.send("ok");
+    connection.end();
+  });
+});
+
+// dislike middleware
+app.post("/dislike", multer().none(), (req, res) => {
+  const uuid_post = req.body.uuid_post;
+  const uuid_user = req.signedCookies["uuid"];
+
+  let q = `delete from likes where user='${uuid_user}' and post='${uuid_post}'`;
 
   const connection = mysql.createConnection({
     host: "localhost",

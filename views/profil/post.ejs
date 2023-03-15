@@ -165,12 +165,29 @@
         let data_upload = new FormData();
         data_upload.append("uuid_post", uuid_post);
 
-        let xhttp = new XMLHttpRequest();
-        xhttp.onload = () => {
-          document.getElementById(`likes_${uuid_post}`).src = "/img/lovex.png";
-        };
-        xhttp.open("POST", "/likes", true);
-        xhttp.send(data_upload);
+        // dislike
+        if (
+          document
+            .getElementById(`likes_${uuid_post}`)
+            .src.includes("/img/lovex.png")
+        ) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`likes_${uuid_post}`).src = "/img/love.png";
+          };
+          xhttp.open("POST", "/dislike", true);
+          xhttp.send(data_upload);
+        }
+        // like
+        else {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`likes_${uuid_post}`).src =
+              "/img/lovex.png";
+          };
+          xhttp.open("POST", "/likes", true);
+          xhttp.send(data_upload);
+        }
       }
     </script>
   </body>
