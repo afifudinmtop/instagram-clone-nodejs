@@ -367,6 +367,28 @@ app.post("/edit", multer().none(), (req, res) => {
   });
 });
 
+// delete post api
+app.get("/delete", (req, res) => {
+  const uuid = req.query.uuid;
+
+  let q = `update post set hapus='hapus' where uuid='${uuid}'`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/profil/`);
+    connection.end();
+  });
+});
+
 // setting page
 app.get("/setting", (req, res) => {
   // kalau sudah login

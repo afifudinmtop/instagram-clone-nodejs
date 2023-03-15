@@ -5,9 +5,6 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
-edit post
-delete post
-
 display like
 un-like
 
