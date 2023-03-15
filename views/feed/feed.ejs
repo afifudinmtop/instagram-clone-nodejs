@@ -72,15 +72,14 @@
     <div class="pb-5">
       <% list_post.forEach(x => { %>
       <!-- post head -->
-      <a class="text-decoration-none" href="/user/?uuid=<%= x.user %>">
-        <div class="d-flex justify-content-between p-3">
+      <div class="d-flex justify-content-between p-3">
+        <a class="text-decoration-none" href="/user/?uuid=<%= x.user %>">
           <div class="d-flex">
             <img class="user_img my-auto" src="/uploads/<%= x.user_image %>" />
             <span class="user_username my-auto ms-2"><%= x.username %></span>
           </div>
-          <img class="my-auto" width="24px" height="24px" src="/img/3dot.png" />
-        </div>
-      </a>
+        </a>
+      </div>
 
       <!-- post img -->
       <a class="text-decoration-none" href="/post_detail/?uuid=<%= x.uuid %>">

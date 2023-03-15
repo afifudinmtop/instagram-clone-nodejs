@@ -314,6 +314,59 @@ app.get("/profil", (req, res) => {
   }
 });
 
+// edit page
+app.get("/edit", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    let q = `select * from post where uuid = '${req.query.uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      res.render("profil/edit", {
+        rows,
+      });
+    });
+  }
+
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// edit api
+app.post("/edit", multer().none(), (req, res) => {
+  const caption = req.body.caption;
+  const uuid = req.body.uuid;
+
+  let q = `update post set caption='${caption}' where uuid='${uuid}'`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/post_detail/?uuid=${uuid}`);
+    connection.end();
+  });
+});
+
 // setting page
 app.get("/setting", (req, res) => {
   // kalau sudah login

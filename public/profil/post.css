@@ -98,3 +98,29 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
+/* modal */
+.modal-dialog {
+  max-width: 270px;
+}
+
+.button_delete {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  color: #ed4956;
+  border-bottom: 1px solid #dbdbdb;
+  display: block;
+  text-decoration: none;
+}
+
+.button_edit,
+.button_cancel {
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  color: #262626;
+  border-bottom: 1px solid #dbdbdb;
+  display: block;
+  text-decoration: none;
+}

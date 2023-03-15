@@ -1,0 +1,43 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+}
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.logo_arrow {
+  background-image: url("/img/arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  transform: rotate(270deg);
+}
+
+.button_submit {
+  background: transparent;
+  color: #0095f6;
+  font-size: 16px;
+  font-weight: 600;
+  border: 0;
+}
+
+.new_post {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.user_image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}

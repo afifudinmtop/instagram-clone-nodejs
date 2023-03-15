@@ -48,15 +48,44 @@
     <div class="pb-5">
       <% data.forEach(x => { %>
       <!-- post head -->
-      <a class="text-decoration-none" href="/user/?uuid=<%= x.user %>">
-        <div class="d-flex justify-content-between p-3">
+      <div class="d-flex justify-content-between p-3">
+        <a href="/user/?uuid=<%= x.user %>" class="text-decoration-none">
           <div class="d-flex">
             <img class="user_img my-auto" src="/uploads/<%= x.user_image %>" />
             <span class="user_username my-auto ms-2"><%= x.username %></span>
           </div>
-          <img class="my-auto" width="24px" height="24px" src="/img/3dot.png" />
+        </a>
+
+        <% if (x.user == profil[0].uuid) { %>
+        <img
+          class="my-auto"
+          width="24px"
+          height="24px"
+          src="/img/3dot.png"
+          data-bs-toggle="modal"
+          data-bs-target="#modalx"
+        />
+        <% } %>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="modalx" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body p-0">
+              <a href="/delete/?uuid=<%= x.uuid %>" class="button_delete py-2">
+                Delete
+              </a>
+              <a href="/edit/?uuid=<%= x.uuid %>" class="button_edit py-2">
+                Edit
+              </a>
+              <a href="#" class="button_edit py-2" data-bs-dismiss="modal">
+                Cancel
+              </a>
+            </div>
+          </div>
         </div>
-      </a>
+      </div>
 
       <!-- post img -->
       <a class="text-decoration-none" href="/post_detail/?uuid=<%= x.uuid %>">
