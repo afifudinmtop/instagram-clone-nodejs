@@ -608,6 +608,49 @@ app.post("/dislike", multer().none(), (req, res) => {
   });
 });
 
+// post_like page
+app.get("/post_like", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `select likes.post, likes.user,`;
+    q += ` user.username, user.image, user.first_name, user.last_name`;
+
+    q += ` FROM likes`;
+    q += ` INNER JOIN user ON likes.user = user.uuid`;
+    q += ` WHERE likes.post = '${req.query.uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      const list_like = rows;
+
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("feed/post_like", {
+          list_like,
+          profil,
+        });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);
