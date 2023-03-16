@@ -719,6 +719,116 @@ app.get("/user", (req, res) => {
   }
 });
 
+// post_comment page
+app.get("/post_comment", (req, res) => {
+  const uuid_post = req.query.uuid;
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `select comment.user, comment.post, comment.comment, comment.ts,`;
+    q += ` user.username, user.image`;
+
+    q += ` FROM comment`;
+    q += ` INNER JOIN user ON comment.user = user.uuid`;
+    q += ` WHERE comment.post='${uuid_post}' and comment.hapus is null`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      // const list_comment = rows;
+
+      let list_comment = [];
+      rows.forEach((x) => {
+        const ts = timeDifference(x.ts);
+        let x2 = {
+          user: x.user,
+          post: x.post,
+          comment: x.comment,
+          ts,
+          username: x.username,
+          image: x.image,
+        };
+        list_comment.push(x2);
+      });
+
+      let q_post = `select post.uuid, post.user, post.image, post.caption, post.ts,`;
+      q_post += ` user.username, user.image as user_image`;
+      q_post += ` FROM post`;
+      q_post += ` INNER JOIN user ON post.user = user.uuid`;
+      q_post += ` WHERE post.uuid = '${uuid_post}'`;
+
+      connection.query(q_post, (err_post, rows_post, fields_post) => {
+        if (err_post) throw err_post;
+
+        let post = [];
+        rows_post.forEach((x) => {
+          const ts = timeDifference(x.ts);
+          let x2 = {
+            uuid: x.uuid,
+            user: x.user,
+            image: x.image,
+            caption: x.caption,
+            ts,
+            username: x.username,
+            user_image: x.user_image,
+          };
+          post.push(x2);
+        });
+
+        let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+        connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+          if (err_profil) throw err_profil;
+
+          const profil = rows_profil;
+          res.render("feed/post_comment", {
+            list_comment,
+            profil,
+            post,
+          });
+        });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// post_comment api
+app.post("/post_comment", multer().none(), (req, res) => {
+  const comment = req.body.comment;
+  const uuid_post = req.body.uuid_post;
+  const uuid = uuidv4();
+  const uuid_user = req.signedCookies["uuid"];
+
+  let q = `insert into comment (uuid, user, post, comment) `;
+  q += `values ('${uuid}', '${uuid_user}', '${uuid_post}', '${comment}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/post_comment/?uuid=${uuid_post}`);
+    connection.end();
+  });
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);

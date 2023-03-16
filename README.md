@@ -6,11 +6,8 @@ instagram clone using node.js as backend
 
 ```javascript
 
-display comments
-insert comments
 edit comments
 delete comments
-
 
 follow
 unfollow
