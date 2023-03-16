@@ -651,6 +651,74 @@ app.get("/post_like", (req, res) => {
   }
 });
 
+// profil page
+app.get("/user", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.query.uuid;
+    if (req.signedCookies["uuid"] == uuid) {
+      res.redirect("/profil");
+    }
+    // kalau bukan profil sendiri
+    else {
+      let q = `select * from user where hapus is null and uuid='${uuid}'`;
+      let q_list = `select * from post where hapus is null and user='${uuid}' order by id desc`;
+
+      const connection = mysql.createConnection({
+        host: "localhost",
+        user: "admininstagram",
+        password: "admininstagram",
+        database: "instagram-clone-nodejs",
+      });
+
+      connection.connect();
+
+      connection.query(q, (err, rows, fields) => {
+        if (err) throw err;
+
+        // cari data user
+        const username = rows[0].username;
+        const first_name = rows[0].first_name;
+        const last_name = rows[0].last_name;
+        const image = rows[0].image;
+        const bio = rows[0].bio;
+
+        // cari data post user
+        connection.query(q_list, (err2, rows2, fields2) => {
+          const list_post = rows2;
+
+          let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+          connection.query(
+            q_profil,
+            (err_profil, rows_profil, fields_profil) => {
+              if (err_profil) throw err_profil;
+
+              const profil = rows_profil;
+
+              res.render("user/user", {
+                username,
+                first_name,
+                last_name,
+                image,
+                posts: "40",
+                followers: "300",
+                following: "917",
+                bio,
+                list_post,
+                profil,
+              });
+            }
+          );
+        });
+      });
+    }
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);

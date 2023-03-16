@@ -5,7 +5,6 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
-user page
 
 display comments
 insert comments

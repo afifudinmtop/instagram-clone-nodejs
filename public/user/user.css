@@ -1,0 +1,141 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.logo_x {
+  background-image: url("/img/arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  transform: rotate(270deg);
+}
+
+.header_username {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.user_image {
+  width: 77px;
+  height: 77px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info1_username {
+  font-size: 20px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.following {
+  color: black;
+  background-color: #efefef;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.message {
+  color: black;
+  background-color: #efefef;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.info2_username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.info2_bio {
+  font-size: 14px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.stats_number {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  text-align: center;
+}
+
+.stats_sub {
+  font-size: 14px;
+  font-weight: 400;
+  color: #8e8e8e;
+  text-align: center;
+}
+
+.stats_div {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+
+  border-top-color: #dbdbdb;
+  border-top-width: 2px;
+  border-top-style: solid;
+}
+
+.list_post {
+  position: relative;
+}
+
+.list_post:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%; /* The padding depends on the width, not on the height, so with a padding-bottom of 100% you will get a square */
+}
+
+.list_post img {
+  position: absolute; /* Take your picture out of the flow */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; /* Make the picture taking the size of it's parent */
+  width: 100%; /* This if for the object-fit */
+  height: 100%; /* This if for the object-fit */
+  object-fit: cover; /* Equivalent of the background-size: cover; of a background-image */
+  object-position: center;
+}
+
+.profil_img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  border-top-color: #dbdbdb;
+  border-top-width: 1px;
+  border-top-style: solid;
+  width: 370px;
+  background-color: white;
+}
