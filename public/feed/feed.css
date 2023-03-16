@@ -3,7 +3,7 @@ body {
   height: 100vh;
   width: 100vw;
   font-family: "Roboto", sans-serif;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .logo_ig {
@@ -37,6 +37,13 @@ body {
   border-bottom-color: #dbdbdb;
   border-bottom-width: 1px;
   border-bottom-style: solid;
+}
+
+/* main body */
+
+.main {
+  overflow: auto;
+  height: -webkit-fill-available;
 }
 
 .feed_img {
