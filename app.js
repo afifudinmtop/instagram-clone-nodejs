@@ -724,7 +724,7 @@ app.get("/post_comment", (req, res) => {
   const uuid_post = req.query.uuid;
   // kalo uda login
   if (req.signedCookies["uuid"]) {
-    let q = `select comment.user, comment.post, comment.comment, comment.ts,`;
+    let q = `select comment.uuid, comment.user, comment.post, comment.comment, comment.ts,`;
     q += ` user.username, user.image`;
 
     q += ` FROM comment`;
@@ -749,6 +749,7 @@ app.get("/post_comment", (req, res) => {
       rows.forEach((x) => {
         const ts = timeDifference(x.ts);
         let x2 = {
+          uuid: x.uuid,
           user: x.user,
           post: x.post,
           comment: x.comment,
@@ -812,6 +813,29 @@ app.post("/post_comment", multer().none(), (req, res) => {
 
   let q = `insert into comment (uuid, user, post, comment) `;
   q += `values ('${uuid}', '${uuid_user}', '${uuid_post}', '${comment}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/post_comment/?uuid=${uuid_post}`);
+    connection.end();
+  });
+});
+
+// delete_comment api
+app.get("/delete_comment", multer().none(), (req, res) => {
+  const uuid = req.query.uuid;
+  const uuid_post = req.query.uuid_post;
+
+  let q = `update comment set hapus='hapus' where uuid='${uuid}'`;
 
   const connection = mysql.createConnection({
     host: "localhost",

@@ -39,8 +39,14 @@ body {
 }
 
 .post_ts {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
+  color: #8e8e8e;
+}
+
+.post_delete {
+  font-size: 12px;
+  font-weight: 600;
   color: #8e8e8e;
 }
 
