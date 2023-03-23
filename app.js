@@ -682,6 +682,7 @@ app.get("/user", (req, res) => {
         const last_name = rows[0].last_name;
         const image = rows[0].image;
         const bio = rows[0].bio;
+        const uuid_user = rows[0].uuid;
 
         // cari data post user
         connection.query(q_list, (err2, rows2, fields2) => {
@@ -695,18 +696,31 @@ app.get("/user", (req, res) => {
 
               const profil = rows_profil;
 
-              res.render("user/user", {
-                username,
-                first_name,
-                last_name,
-                image,
-                posts: "40",
-                followers: "300",
-                following: "917",
-                bio,
-                list_post,
-                profil,
-              });
+              // cari data follow
+              let q_follow = `select COUNT(*) as jumlah from following where user='${req.signedCookies["uuid"]}' and following='${uuid_user}'`;
+              connection.query(
+                q_follow,
+                (err_follow, rows_follow, fields_follow) => {
+                  if (err_follow) throw err_follow;
+
+                  const follow = rows_follow;
+
+                  res.render("user/user", {
+                    uuid_user,
+                    username,
+                    first_name,
+                    last_name,
+                    image,
+                    posts: "40",
+                    followers: "300",
+                    following: "917",
+                    bio,
+                    list_post,
+                    profil,
+                    follow,
+                  });
+                }
+              );
             }
           );
         });
@@ -849,6 +863,56 @@ app.get("/delete_comment", multer().none(), (req, res) => {
   connection.query(q, (err, rows, fields) => {
     if (err) throw err;
     res.redirect(`/post_comment/?uuid=${uuid_post}`);
+    connection.end();
+  });
+});
+
+// follow api
+app.get("/follow", multer().none(), (req, res) => {
+  const uuid_target = req.query.uuid;
+  const uuid_user = req.signedCookies["uuid"];
+  const uuid = uuidv4();
+
+  let q = `insert into following (uuid, user, following) `;
+  q += `values ('${uuid}', '${uuid_user}', '${uuid_target}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/user/?uuid=${uuid_target}`);
+
+    connection.end();
+  });
+});
+
+// unfollow api
+app.get("/unfollow", multer().none(), (req, res) => {
+  const uuid_target = req.query.uuid;
+  const uuid_user = req.signedCookies["uuid"];
+
+  let q = `delete from following where user='${uuid_user}' and following='${uuid_target}'`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+    res.redirect(`/user/?uuid=${uuid_target}`);
+
     connection.end();
   });
 });

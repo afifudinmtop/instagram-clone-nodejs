@@ -57,6 +57,14 @@ body {
   font-size: 14px;
 }
 
+.follow {
+  color: white;
+  background-color: #0095f6;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
 .message {
   color: black;
   background-color: #efefef;

@@ -5,8 +5,6 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
-delete comments;
-
 follow;
 unfollow;
 
