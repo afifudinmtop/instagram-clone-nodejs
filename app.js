@@ -917,6 +917,48 @@ app.get("/unfollow", multer().none(), (req, res) => {
   });
 });
 
+// search page
+app.get("/search_feed", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `SELECT * FROM post`;
+    q += ` WHERE post.hapus is null order by rand()`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    // data post
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+      let list_post = rows;
+
+      // data profil
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("search/feed", {
+          list_post,
+          profil,
+        });
+
+        // res.send({ list_post, profil });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);

@@ -1,0 +1,66 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+}
+
+.search_bar_parent {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+.search_bar {
+  border-color: #dbdbdb;
+  border-width: 2px;
+  border-style: solid;
+
+  color: #8e8e8e;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+.list_post {
+  position: relative;
+}
+
+.list_post:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%; /* The padding depends on the width, not on the height, so with a padding-bottom of 100% you will get a square */
+}
+
+.list_post img {
+  position: absolute; /* Take your picture out of the flow */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; /* Make the picture taking the size of it's parent */
+  width: 100%; /* This if for the object-fit */
+  height: 100%; /* This if for the object-fit */
+  object-fit: cover; /* Equivalent of the background-size: cover; of a background-image */
+  object-position: center;
+}
+
+.profil_img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  border-top-color: #dbdbdb;
+  border-top-width: 1px;
+  border-top-style: solid;
+  width: 370px;
+  background-color: white;
+}
