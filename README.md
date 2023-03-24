@@ -24,6 +24,9 @@ npm start
 ## Todo
 
 ```javascript
+user stats
+list following
+list followers
 message;
 
 bookmark;
