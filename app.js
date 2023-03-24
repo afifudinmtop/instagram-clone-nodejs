@@ -959,6 +959,72 @@ app.get("/search_feed", (req, res) => {
   }
 });
 
+// search page
+app.get("/search", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `select * from user where hapus is null`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    // data post
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+      let list_user = rows;
+
+      // data profil
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("search/search", {
+          list_user,
+          profil,
+        });
+
+        // res.send({ list_user, profil });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// search middleware
+app.post("/search", multer().none(), (req, res) => {
+  const cari_value = req.body.cari_value;
+
+  let q = `select * from user where `;
+  q += `username LIKE '%${cari_value}%' OR first_name LIKE '%${cari_value}%' OR last_name LIKE '%${cari_value}%' `;
+  q += `and hapus is null`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.send(rows);
+    connection.end();
+  });
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);
