@@ -4,8 +4,6 @@ instagram clone using node.js as backend
 
 ## Installation
 
-Use the node package manager npm to install concat_mp3.
-
 ```javascript
 $ git clone https://github.com/afifudinmtop/instagram-clone-nodejs.git
 $ cd instagram-clone-nodejs
