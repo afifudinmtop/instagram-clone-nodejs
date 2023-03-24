@@ -346,20 +346,9 @@ app.get("/profil", (req, res) => {
           connection.query(q_count_following, (err4, rows4, fields4) => {
             const jumlah_following = rows4[0].jumlah_following;
 
+            // jumlah_followers
             connection.query(q_count_followers, (err5, rows5, fields5) => {
               const jumlah_followers = rows5[0].jumlah_followers;
-
-              // res.send({
-              //   username,
-              //   first_name,
-              //   last_name,
-              //   image,
-              //   bio,
-              //   list_post,
-              //   jumlah_post,
-              //   jumlah_following,
-              //   jumlah_followers,
-              // });
 
               res.render("profil/profil", {
                 username,
@@ -746,6 +735,9 @@ app.get("/user", (req, res) => {
     else {
       let q = `select * from user where hapus is null and uuid='${uuid}'`;
       let q_list = `select * from post where hapus is null and user='${uuid}' order by id desc`;
+      let q_count_post = `select COUNT(*) as jumlah_post from post where hapus is null and user='${uuid}'`;
+      let q_count_following = `select COUNT(*) as jumlah_following from following where user='${uuid}'`;
+      let q_count_followers = `select COUNT(*) as jumlah_followers from following where following='${uuid}'`;
 
       const connection = mysql.createConnection({
         host: "localhost",
@@ -785,22 +777,42 @@ app.get("/user", (req, res) => {
                 q_follow,
                 (err_follow, rows_follow, fields_follow) => {
                   if (err_follow) throw err_follow;
-
                   const follow = rows_follow;
 
-                  res.render("user/user", {
-                    uuid_user,
-                    username,
-                    first_name,
-                    last_name,
-                    image,
-                    posts: "40",
-                    followers: "300",
-                    following: "917",
-                    bio,
-                    list_post,
-                    profil,
-                    follow,
+                  // jumlah_post
+                  connection.query(q_count_post, (err3, rows3, fields3) => {
+                    const jumlah_post = rows3[0].jumlah_post;
+
+                    // jumlah_following
+                    connection.query(
+                      q_count_following,
+                      (err4, rows4, fields4) => {
+                        const jumlah_following = rows4[0].jumlah_following;
+
+                        // jumlah_followers
+                        connection.query(
+                          q_count_followers,
+                          (err5, rows5, fields5) => {
+                            const jumlah_followers = rows5[0].jumlah_followers;
+
+                            res.render("user/user", {
+                              uuid_user,
+                              username,
+                              first_name,
+                              last_name,
+                              image,
+                              jumlah_post,
+                              jumlah_followers,
+                              jumlah_following,
+                              bio,
+                              list_post,
+                              profil,
+                              follow,
+                            });
+                          }
+                        );
+                      }
+                    );
                   });
                 }
               );
