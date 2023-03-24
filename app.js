@@ -167,13 +167,16 @@ app.get("/feed", (req, res) => {
     let q = `SELECT post.uuid, post.user, post.image, post.caption, post.ts,`;
     q += ` user.username, user.image as user_image, `;
 
-    // kalao ada return 'lovex.png', else return 'love.png'
+    // kalau ada return 'lovex.png', else return 'love.png'
     q += ` IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex`;
 
     q += ` FROM post INNER JOIN user ON post.user=user.uuid`;
 
     // likes
     q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
+
+    // filter only following
+    q += `INNER JOIN following ON following.following = post.user AND following.user = '${req.signedCookies["uuid"]}'`;
 
     q += ` WHERE post.hapus is null order by post.id desc`;
 

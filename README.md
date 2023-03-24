@@ -5,8 +5,6 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
-home feed only show followed user
-search;
 message;
 
 bookmark;
