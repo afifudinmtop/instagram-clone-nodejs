@@ -24,8 +24,6 @@ npm start
 ## Todo
 
 ```javascript
-list following
-list followers
 message;
 
 bookmark;

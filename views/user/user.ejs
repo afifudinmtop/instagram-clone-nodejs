@@ -105,12 +105,23 @@
         <div class="stats_sub">posts</div>
       </div>
       <div>
-        <div class="stats_number"><%= jumlah_followers %></div>
-        <div class="stats_sub">followers</div>
+        <a
+          class="text-decoration-none flex-fill"
+          href="/user_followers/?uuid=<%= uuid_user %>"
+        >
+          <div class="stats_number"><%= jumlah_followers %></div>
+          <div class="stats_sub">followers</div>
+        </a>
       </div>
+
       <div>
-        <div class="stats_number"><%= jumlah_following %></div>
-        <div class="stats_sub">following</div>
+        <a
+          class="text-decoration-none flex-fill"
+          href="/user_following/?uuid=<%= uuid_user %>"
+        >
+          <div class="stats_number"><%= jumlah_following %></div>
+          <div class="stats_sub">following</div>
+        </a>
       </div>
     </div>
 

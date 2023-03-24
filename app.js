@@ -328,6 +328,7 @@ app.get("/profil", (req, res) => {
       if (err) throw err;
 
       // cari data user
+      const uuid_user = rows[0].uuid;
       const username = rows[0].username;
       const first_name = rows[0].first_name;
       const last_name = rows[0].last_name;
@@ -351,6 +352,7 @@ app.get("/profil", (req, res) => {
               const jumlah_followers = rows5[0].jumlah_followers;
 
               res.render("profil/profil", {
+                uuid_user,
                 username,
                 first_name,
                 last_name,
@@ -1118,6 +1120,93 @@ app.post("/search", multer().none(), (req, res) => {
     res.send(rows);
     connection.end();
   });
+});
+
+// user_following page
+app.get("/user_following", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `select following.following,`;
+    q += ` user.username, user.image, user.first_name, user.last_name`;
+
+    q += ` FROM following`;
+    q += ` INNER JOIN user ON following.following = user.uuid`;
+    q += ` WHERE following.user = '${req.query.uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      const list_following = rows;
+
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        // res.send({ list_following, profil });
+        res.render("user/user_following", {
+          list_following,
+          profil,
+        });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// user_followers page
+app.get("/user_followers", (req, res) => {
+  // kalo uda login
+  if (req.signedCookies["uuid"]) {
+    let q = `select following.user,`;
+    q += ` user.username, user.image, user.first_name, user.last_name`;
+
+    q += ` FROM following`;
+    q += ` INNER JOIN user ON following.user = user.uuid`;
+    q += ` WHERE following.following = '${req.query.uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      const list_followers = rows;
+
+      let q_profil = `select * from user where uuid = '${req.signedCookies["uuid"]}'`;
+      connection.query(q_profil, (err_profil, rows_profil, fields_profil) => {
+        if (err_profil) throw err_profil;
+
+        const profil = rows_profil;
+        res.render("user/user_followers", {
+          list_followers,
+          profil,
+        });
+      });
+    });
+  }
+  // kalo belum login
+  else {
+    res.redirect("/login");
+  }
 });
 
 // start at port
