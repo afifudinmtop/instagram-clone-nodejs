@@ -5,6 +5,8 @@ instagram clone using node.js as backend
 ## Todo
 
 ```javascript
+likes number
+comment number
 message;
 
 bookmark;

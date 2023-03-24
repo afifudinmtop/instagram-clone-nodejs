@@ -164,21 +164,47 @@ app.post("/login", multer().none(), (req, res) => {
 app.get("/feed", (req, res) => {
   // kalo uda login
   if (req.signedCookies["uuid"]) {
-    let q = `SELECT post.uuid, post.user, post.image, post.caption, post.ts,`;
-    q += ` user.username, user.image as user_image, `;
+    let q = `
+    SELECT 
+    post.uuid, 
+    post.user, 
+    post.image, 
+    post.caption, 
+    post.ts, 
+    user.username, 
+    user.image as user_image, 
+    IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex, 
+    COALESCE(num_likes.num_likes, 0) AS num_likes,
+    COALESCE(num_comments.num_comments, 0) AS num_comments
+FROM 
+    post 
+    INNER JOIN user ON post.user=user.uuid
+    LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'
+    INNER JOIN following ON following.following = post.user AND following.user = '${req.signedCookies["uuid"]}'
+    LEFT JOIN (
+        SELECT 
+            post, 
+            COUNT(*) AS num_likes 
+        FROM 
+            likes 
+        GROUP BY 
+            post
+    ) num_likes ON post.uuid = num_likes.post
+    LEFT JOIN (
+        SELECT 
+            post, 
+            COUNT(*) AS num_comments 
+        FROM 
+            comment 
+        GROUP BY 
+            post
+    ) num_comments ON post.uuid = num_comments.post
+WHERE 
+    post.hapus is null 
+ORDER BY 
+    post.id desc
 
-    // kalau ada return 'lovex.png', else return 'love.png'
-    q += ` IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex`;
-
-    q += ` FROM post INNER JOIN user ON post.user=user.uuid`;
-
-    // likes
-    q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
-
-    // filter only following
-    q += `INNER JOIN following ON following.following = post.user AND following.user = '${req.signedCookies["uuid"]}'`;
-
-    q += ` WHERE post.hapus is null order by post.id desc`;
+    `;
 
     const connection = mysql.createConnection({
       host: "localhost",
@@ -203,6 +229,8 @@ app.get("/feed", (req, res) => {
           username: x.username,
           user_image: x.user_image,
           likex: x.likex,
+          num_likes: x.num_likes,
+          num_comments: x.num_comments,
         };
         list_post.push(x2);
       });
@@ -216,6 +244,8 @@ app.get("/feed", (req, res) => {
           list_post,
           profil,
         });
+
+        // res.send({ list_post, profil });
       });
     });
   }
@@ -504,6 +534,7 @@ app.post("/add_middleware", upload.single("file"), (req, res) => {
 app.get("/post_detail", (req, res) => {
   // kalo uda login
   if (req.signedCookies["uuid"]) {
+    /*
     let q = `select post.uuid, post.user, post.image, post.caption, post.ts,`;
     q += ` user.username, user.image as user_image,`;
 
@@ -514,6 +545,22 @@ app.get("/post_detail", (req, res) => {
     q += ` INNER JOIN user ON post.user = user.uuid`;
     q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
     q += ` WHERE post.uuid = '${req.query.uuid}'`;
+    */
+
+    let q = `
+    SELECT post.uuid, post.user, post.image, post.caption, post.ts,
+       user.username, user.image AS user_image,
+       IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex,
+       COUNT(DISTINCT likes.user) AS like_count,
+       COUNT(DISTINCT comment.uuid) AS comment_count
+FROM post
+INNER JOIN user ON post.user = user.uuid
+LEFT JOIN likes ON post.uuid = likes.post
+LEFT JOIN comment ON post.uuid = comment.post
+WHERE post.uuid = '${req.query.uuid}'
+GROUP BY post.uuid
+
+    `;
 
     const connection = mysql.createConnection({
       host: "localhost",
@@ -539,6 +586,8 @@ app.get("/post_detail", (req, res) => {
           username: x.username,
           user_image: x.user_image,
           likex: x.likex,
+          like_count: x.like_count,
+          comment_count: x.comment_count,
         };
         data.push(x2);
       });
@@ -552,6 +601,8 @@ app.get("/post_detail", (req, res) => {
           data,
           profil,
         });
+
+        // res.send({ data, profil });
       });
     });
   }

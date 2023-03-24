@@ -115,7 +115,7 @@
 
       <!-- post likes -->
       <a class="text-decoration-none" href="/post_like/?uuid=<%= x.uuid %>">
-        <div class="post_like px-3 pt-2">70 likes</div>
+        <div class="post_like px-3 pt-2"><%= x.num_likes %> likes</div>
       </a>
 
       <!-- post caption -->
@@ -128,7 +128,9 @@
 
       <!-- post comment -->
       <a class="text-decoration-none" href="/post_comment/?uuid=<%= x.uuid %>">
-        <div class="post_comment px-3 pt-1">view all 0 comments</div>
+        <div class="post_comment px-3 pt-1">
+          view all <%= x.num_comments %> comments
+        </div>
       </a>
 
       <!-- post ts -->
