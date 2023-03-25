@@ -6,6 +6,10 @@ body {
   overflow: hidden;
 }
 
+.apip_pointer {
+  cursor: pointer;
+}
+
 .logo_ig {
   background-image: url("/img/logo1.png");
   background-size: contain;

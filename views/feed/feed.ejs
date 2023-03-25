@@ -95,7 +95,8 @@
             onclick="likes('<%= x.uuid %>')"
             src="/img/<%= x.likex %>"
             width="22px"
-            height="22px"
+            height="24px"
+            style="margin-top: 2px"
           />
 
           <a
@@ -108,9 +109,15 @@
             <img src="/img/share.png" width="22px" height="22px" />
           </a>
         </div>
-        <a class="text-decoration-none" href="/saved/">
-          <img src="/img/saved.png" width="22px" height="22px" />
-        </a>
+
+        <img
+          id="saved_<%= x.uuid %>"
+          class="apip_pointer"
+          onclick="saved('<%= x.uuid %>')"
+          src="/img/<%= x.saved_status %>"
+          width="22px"
+          height="22px"
+        />
       </div>
 
       <!-- post likes -->
@@ -160,6 +167,7 @@
     </div>
 
     <script>
+      // middleware likes
       function likes(uuid_post) {
         let data_upload = new FormData();
         data_upload.append("uuid_post", uuid_post);
@@ -185,6 +193,37 @@
               "/img/lovex.png";
           };
           xhttp.open("POST", "/likes", true);
+          xhttp.send(data_upload);
+        }
+      }
+
+      // middleware saved
+      function saved(uuid_post) {
+        let data_upload = new FormData();
+        data_upload.append("uuid_post", uuid_post);
+
+        // unsaved
+        if (
+          document
+            .getElementById(`saved_${uuid_post}`)
+            .src.includes("/img/unsaved.png")
+        ) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`saved_${uuid_post}`).src =
+              "/img/saved.png";
+          };
+          xhttp.open("POST", "/unsaved", true);
+          xhttp.send(data_upload);
+        }
+        // saved
+        else {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onload = () => {
+            document.getElementById(`saved_${uuid_post}`).src =
+              "/img/unsaved.png";
+          };
+          xhttp.open("POST", "/saved", true);
           xhttp.send(data_upload);
         }
       }

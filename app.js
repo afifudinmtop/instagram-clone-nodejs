@@ -173,13 +173,15 @@ app.get("/feed", (req, res) => {
     post.ts, 
     user.username, 
     user.image as user_image, 
-    IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex, 
+    IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex,
+    IF(saved.post IS NULL, 'saved.png', 'unsaved.png') AS saved_status,  
     COALESCE(num_likes.num_likes, 0) AS num_likes,
     COALESCE(num_comments.num_comments, 0) AS num_comments
 FROM 
     post 
     INNER JOIN user ON post.user=user.uuid
     LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'
+    LEFT JOIN saved ON post.uuid = saved.post AND saved.user = '${req.signedCookies["uuid"]}'
     INNER JOIN following ON following.following = post.user AND following.user = '${req.signedCookies["uuid"]}'
     LEFT JOIN (
         SELECT 
@@ -231,6 +233,7 @@ ORDER BY
           likex: x.likex,
           num_likes: x.num_likes,
           num_comments: x.num_comments,
+          saved_status: x.saved_status,
         };
         list_post.push(x2);
       });
@@ -554,31 +557,20 @@ app.post("/add_middleware", upload.single("file"), (req, res) => {
 app.get("/post_detail", (req, res) => {
   // kalo uda login
   if (req.signedCookies["uuid"]) {
-    /*
-    let q = `select post.uuid, post.user, post.image, post.caption, post.ts,`;
-    q += ` user.username, user.image as user_image,`;
-
-    // kalao ada return 'lovex.png', else return 'love.png'
-    q += ` IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex`;
-
-    q += ` FROM post`;
-    q += ` INNER JOIN user ON post.user = user.uuid`;
-    q += ` LEFT JOIN likes ON post.uuid = likes.post AND likes.user = '${req.signedCookies["uuid"]}'`;
-    q += ` WHERE post.uuid = '${req.query.uuid}'`;
-    */
-
-    let q = `
+    const q = `
     SELECT post.uuid, post.user, post.image, post.caption, post.ts,
-       user.username, user.image AS user_image,
-       IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex,
-       COUNT(DISTINCT likes.user) AS like_count,
-       COUNT(DISTINCT comment.uuid) AS comment_count
-FROM post
-INNER JOIN user ON post.user = user.uuid
-LEFT JOIN likes ON post.uuid = likes.post
-LEFT JOIN comment ON post.uuid = comment.post
-WHERE post.uuid = '${req.query.uuid}'
-GROUP BY post.uuid
+      user.username, user.image AS user_image,
+      IF(likes.post IS NULL, 'love.png', 'lovex.png') AS likex,
+      COUNT(DISTINCT likes.user) AS like_count,
+      COUNT(DISTINCT comment.uuid) AS comment_count,
+      IF(saved.post IS NULL, 'saved.png', 'unsaved.png') AS saved_status
+    FROM post
+    INNER JOIN user ON post.user = user.uuid
+    LEFT JOIN likes ON post.uuid = likes.post
+    LEFT JOIN comment ON post.uuid = comment.post
+    LEFT JOIN saved ON post.uuid = saved.post
+    WHERE post.uuid = '${req.query.uuid}'
+    GROUP BY post.uuid
 
     `;
 
@@ -608,6 +600,7 @@ GROUP BY post.uuid
           likex: x.likex,
           like_count: x.like_count,
           comment_count: x.comment_count,
+          saved_status: x.saved_status,
         };
         data.push(x2);
       });
@@ -1207,6 +1200,56 @@ app.get("/user_followers", (req, res) => {
   else {
     res.redirect("/login");
   }
+});
+
+// saved middleware
+app.post("/saved", multer().none(), (req, res) => {
+  const uuid_post = req.body.uuid_post;
+  const uuid_user = req.signedCookies["uuid"];
+  const uuid = uuidv4();
+
+  let q = `insert into saved (uuid, user, post) `;
+  q += `values ('${uuid}', '${uuid_user}', '${uuid_post}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.send("ok");
+    connection.end();
+  });
+});
+
+// unsaved middleware
+app.post("/unsaved", multer().none(), (req, res) => {
+  const uuid_post = req.body.uuid_post;
+  const uuid_user = req.signedCookies["uuid"];
+
+  let q = `delete from saved where user='${uuid_user}' and post='${uuid_post}'`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.send("ok");
+    connection.end();
+  });
 });
 
 // start at port
