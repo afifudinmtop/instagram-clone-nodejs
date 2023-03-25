@@ -1252,6 +1252,86 @@ app.post("/unsaved", multer().none(), (req, res) => {
   });
 });
 
+// saved page
+app.get("/saved", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.signedCookies["uuid"];
+    let q = `select * from user where hapus is null and uuid='${uuid}'`;
+    // let q_list = `select * from saved where user='${uuid}' order by id desc`;
+
+    let q_list = `
+    SELECT post.image, post.uuid
+    FROM post
+    INNER JOIN saved ON post.uuid = saved.post
+    WHERE saved.user = '${uuid}'
+    ORDER BY saved.id DESC;
+    `;
+
+    let q_count_post = `select COUNT(*) as jumlah_post from post where hapus is null and user='${uuid}'`;
+    let q_count_following = `select COUNT(*) as jumlah_following from following where user='${uuid}'`;
+    let q_count_followers = `select COUNT(*) as jumlah_followers from following where following='${uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      if (err) throw err;
+
+      // cari data user
+      const uuid_user = rows[0].uuid;
+      const username = rows[0].username;
+      const first_name = rows[0].first_name;
+      const last_name = rows[0].last_name;
+      const image = rows[0].image;
+      const bio = rows[0].bio;
+
+      // cari data post user
+      connection.query(q_list, (err2, rows2, fields2) => {
+        const list_post = rows2;
+
+        // jumlah_post
+        connection.query(q_count_post, (err3, rows3, fields3) => {
+          const jumlah_post = rows3[0].jumlah_post;
+
+          // jumlah_following
+          connection.query(q_count_following, (err4, rows4, fields4) => {
+            const jumlah_following = rows4[0].jumlah_following;
+
+            // jumlah_followers
+            connection.query(q_count_followers, (err5, rows5, fields5) => {
+              const jumlah_followers = rows5[0].jumlah_followers;
+
+              res.render("profil/saved", {
+                uuid_user,
+                username,
+                first_name,
+                last_name,
+                image,
+                bio,
+                list_post,
+                jumlah_post,
+                jumlah_following,
+                jumlah_followers,
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);
