@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2023 at 10:57 AM
+-- Generation Time: Mar 31, 2023 at 11:29 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -70,7 +70,8 @@ CREATE TABLE `dm` (
 INSERT INTO `dm` (`id`, `uuid`, `user`, `target`, `chat`, `ts`) VALUES
 (1, '8b2f069f-4353-4092-99bd-791dd0812ed3', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'tes1 ya', '2023-03-31 07:30:38'),
 (2, '1668e25e-a8aa-4c6b-8fe6-dc2514b911c3', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', '3955dd0e-c436-452c-8a17-a338e0814e0d', 'ok siap', '2023-03-31 08:06:49'),
-(3, 'be9148ae-4614-4411-8ca0-8d2603e28ed2', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'woke ajdnawd ahdaw ad awj ajbdhawbdhawd awjhda dahwdbawh dahdaw djaw', '2023-03-31 08:26:38');
+(3, 'be9148ae-4614-4411-8ca0-8d2603e28ed2', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'woke ajdnawd ahdaw ad awj ajbdhawbdhawd awjhda dahwdbawh dahdaw djaw', '2023-03-31 08:26:38'),
+(4, '4d6cebf8-f7d4-48cd-a479-77dc7dc9236d', '3955dd0e-c436-452c-8a17-a338e0814e0d', '4523946c-897f-405d-b306-8584108681f6', 'cek cek', '2023-03-31 09:16:36');
 
 -- --------------------------------------------------------
 
@@ -93,7 +94,8 @@ INSERT INTO `following` (`id`, `uuid`, `user`, `following`) VALUES
 (3, '1906d00d-f97d-4a53-8b8a-1ad8d78d2af2', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951'),
 (6, 'd5885ebd-17ba-4f46-b45e-b467f341cc7f', '4523946c-897f-405d-b306-8584108681f6', '3955dd0e-c436-452c-8a17-a338e0814e0d'),
 (7, 'c3850048-04c3-4f09-93a9-da2a2c7e2c08', '4523946c-897f-405d-b306-8584108681f6', '002c5519-a693-4ef3-80eb-5fc8f9d2c951'),
-(8, '88a3ecfe-ba4a-4330-b3d2-86b475c1dd34', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', '3955dd0e-c436-452c-8a17-a338e0814e0d');
+(8, '88a3ecfe-ba4a-4330-b3d2-86b475c1dd34', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', '3955dd0e-c436-452c-8a17-a338e0814e0d'),
+(9, 'becccfa3-6666-44d5-978c-f18d3d60fc95', '3955dd0e-c436-452c-8a17-a338e0814e0d', '4523946c-897f-405d-b306-8584108681f6');
 
 -- --------------------------------------------------------
 
@@ -276,13 +278,13 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT for table `dm`
 --
 ALTER TABLE `dm`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `following`
 --
 ALTER TABLE `following`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `likes`

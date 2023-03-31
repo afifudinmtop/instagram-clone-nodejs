@@ -1405,6 +1405,42 @@ app.post("/send_dm", multer().none(), (req, res) => {
   });
 });
 
+// message page
+app.get("/message", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.signedCookies["uuid"];
+    let q = `
+    SELECT DISTINCT dm.target, user.uuid, user.username, user.first_name, user.last_name, image
+    FROM dm
+    JOIN user ON dm.target = user.uuid
+    WHERE dm.user = '${uuid}';
+    `;
+    // let q = `SELECT DISTINCT target FROM dm WHERE user = '${uuid}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      const chat = rows;
+      // res.send(q);
+      res.render("chat/message", {
+        chat,
+      });
+    });
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);

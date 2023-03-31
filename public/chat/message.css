@@ -1,0 +1,60 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+/* nav */
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.logo_back {
+  background-image: url(/img/back.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+}
+
+.header_name {
+  color: #262626;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* main body */
+
+.main {
+  overflow: auto;
+  height: -webkit-fill-available;
+}
+
+.user_img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user_username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.user_fullname {
+  font-size: 14px;
+  font-weight: 400;
+  color: #8e8e8e;
+}
