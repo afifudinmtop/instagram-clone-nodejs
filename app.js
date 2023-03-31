@@ -205,7 +205,6 @@ WHERE
     post.hapus is null 
 ORDER BY 
     post.id desc
-
     `;
 
     const connection = mysql.createConnection({
@@ -218,7 +217,6 @@ ORDER BY
     connection.connect();
 
     connection.query(q, (err, rows, fields) => {
-      if (err) throw err;
       let list_post = [];
       rows.forEach((x) => {
         const ts = timeDifference(x.ts);
@@ -247,8 +245,6 @@ ORDER BY
           list_post,
           profil,
         });
-
-        // res.send({ list_post, profil });
       });
     });
   }
@@ -1332,6 +1328,83 @@ app.get("/saved", (req, res) => {
   }
 });
 
+// dm page
+app.get("/dm", (req, res) => {
+  // kalau sudah login
+  if (req.signedCookies["uuid"]) {
+    const uuid = req.signedCookies["uuid"];
+    const uuid_target = req.query.uuid;
+    let q = `select * from dm where (target='${uuid_target}' and user='${uuid}') OR (user='${uuid_target}' and target='${uuid}')`;
+    let q_target = `select * from user where uuid='${uuid_target}'`;
+
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "admininstagram",
+      password: "admininstagram",
+      database: "instagram-clone-nodejs",
+    });
+
+    connection.connect();
+
+    connection.query(q, (err, rows, fields) => {
+      let chat = [];
+      rows.forEach((x) => {
+        const ts = formatDatetime(x.ts);
+        let x2 = {
+          id: x.id,
+          uuid: x.uuid,
+          user: x.user,
+          target: x.target,
+          chat: x.chat,
+          ts,
+        };
+        chat.push(x2);
+      });
+
+      connection.query(q_target, (err2, rows2, fields2) => {
+        const target = rows2;
+
+        // res.send({ chat, target });
+        res.render("chat/dm", {
+          chat,
+          target,
+        });
+      });
+    });
+  }
+  // kalau belum login
+  else {
+    res.redirect("/login");
+  }
+});
+
+// send_dm middleware
+app.post("/send_dm", multer().none(), (req, res) => {
+  const uuid_target = req.body.uuid_target;
+  const isi_pesan = req.body.isi_pesan;
+  const uuid_user = req.signedCookies["uuid"];
+  const uuid = uuidv4();
+
+  let q = `insert into dm (uuid, user, target, chat) `;
+  q += `values ('${uuid}', '${uuid_user}', '${uuid_target}', '${isi_pesan}')`;
+
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "admininstagram",
+    password: "admininstagram",
+    database: "instagram-clone-nodejs",
+  });
+
+  connection.connect();
+
+  connection.query(q, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.redirect(`/dm/?uuid=${uuid_target}`);
+    connection.end();
+  });
+});
+
 // start at port
 app.listen(port, () => {
   console.log(`running on port ${port}`);
@@ -1359,4 +1432,23 @@ function timeDifference(timestamp) {
   } else {
     return seconds + " second" + (seconds == 1 ? "" : "s") + " ago";
   }
+}
+
+// Output: 31/03/2023 07:30
+function formatDatetime(datetimeString) {
+  const datetime = new Date(datetimeString);
+
+  const formattedDate = datetime.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
+  const formattedTime = datetime.toLocaleTimeString("en-GB", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+
+  const formattedDatetime = `${formattedDate} ${formattedTime}`;
+
+  return formattedDatetime;
 }

@@ -21,16 +21,6 @@ npm start
 # open http://localhost:3000/
 ```
 
-## Todo
-
-```javascript
-message;
-
-bookmark;
-tag;
-mention;
-```
-
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first

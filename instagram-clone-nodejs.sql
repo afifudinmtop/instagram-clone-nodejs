@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2023 at 09:18 AM
+-- Generation Time: Mar 31, 2023 at 10:57 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -51,6 +51,30 @@ INSERT INTO `comment` (`id`, `uuid`, `user`, `post`, `comment`, `ts`, `hapus`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dm`
+--
+
+CREATE TABLE `dm` (
+  `id` int(11) NOT NULL,
+  `uuid` text DEFAULT NULL,
+  `user` text DEFAULT NULL,
+  `target` text DEFAULT NULL,
+  `chat` text DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `dm`
+--
+
+INSERT INTO `dm` (`id`, `uuid`, `user`, `target`, `chat`, `ts`) VALUES
+(1, '8b2f069f-4353-4092-99bd-791dd0812ed3', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'tes1 ya', '2023-03-31 07:30:38'),
+(2, '1668e25e-a8aa-4c6b-8fe6-dc2514b911c3', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', '3955dd0e-c436-452c-8a17-a338e0814e0d', 'ok siap', '2023-03-31 08:06:49'),
+(3, 'be9148ae-4614-4411-8ca0-8d2603e28ed2', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', 'woke ajdnawd ahdaw ad awj ajbdhawbdhawd awjhda dahwdbawh dahdaw djaw', '2023-03-31 08:26:38');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `following`
 --
 
@@ -68,7 +92,8 @@ CREATE TABLE `following` (
 INSERT INTO `following` (`id`, `uuid`, `user`, `following`) VALUES
 (3, '1906d00d-f97d-4a53-8b8a-1ad8d78d2af2', '3955dd0e-c436-452c-8a17-a338e0814e0d', '002c5519-a693-4ef3-80eb-5fc8f9d2c951'),
 (6, 'd5885ebd-17ba-4f46-b45e-b467f341cc7f', '4523946c-897f-405d-b306-8584108681f6', '3955dd0e-c436-452c-8a17-a338e0814e0d'),
-(7, 'c3850048-04c3-4f09-93a9-da2a2c7e2c08', '4523946c-897f-405d-b306-8584108681f6', '002c5519-a693-4ef3-80eb-5fc8f9d2c951');
+(7, 'c3850048-04c3-4f09-93a9-da2a2c7e2c08', '4523946c-897f-405d-b306-8584108681f6', '002c5519-a693-4ef3-80eb-5fc8f9d2c951'),
+(8, '88a3ecfe-ba4a-4330-b3d2-86b475c1dd34', '002c5519-a693-4ef3-80eb-5fc8f9d2c951', '3955dd0e-c436-452c-8a17-a338e0814e0d');
 
 -- --------------------------------------------------------
 
@@ -145,6 +170,26 @@ INSERT INTO `post` (`id`, `uuid`, `user`, `image`, `caption`, `ts`, `hapus`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `saved`
+--
+
+CREATE TABLE `saved` (
+  `id` int(11) NOT NULL,
+  `uuid` text DEFAULT NULL,
+  `user` text DEFAULT NULL,
+  `post` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `saved`
+--
+
+INSERT INTO `saved` (`id`, `uuid`, `user`, `post`) VALUES
+(1, '5170f140-c745-4c03-9419-3277d14391d6', '3955dd0e-c436-452c-8a17-a338e0814e0d', 'f1f355b3-13d5-4817-8250-ec18f2d1db3c');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -182,6 +227,12 @@ ALTER TABLE `comment`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `dm`
+--
+ALTER TABLE `dm`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `following`
 --
 ALTER TABLE `following`
@@ -197,6 +248,12 @@ ALTER TABLE `likes`
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `saved`
+--
+ALTER TABLE `saved`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -216,10 +273,16 @@ ALTER TABLE `comment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `dm`
+--
+ALTER TABLE `dm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `following`
 --
 ALTER TABLE `following`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -232,6 +295,12 @@ ALTER TABLE `likes`
 --
 ALTER TABLE `post`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `saved`
+--
+ALTER TABLE `saved`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`

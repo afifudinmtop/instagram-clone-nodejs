@@ -1,0 +1,138 @@
+body {
+  max-width: 370px;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+}
+
+.apip_pointer {
+  cursor: pointer;
+}
+
+/* nav */
+
+.nav {
+  border-bottom-color: #dbdbdb;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.logo_back {
+  background-image: url(/img/back.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+}
+
+.header_name {
+  color: #262626;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* profil */
+
+.profil_name {
+  color: #262626;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.profil_username {
+  color: #8e8e8e;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.view_profile_button {
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+
+  padding: 6px 16px;
+  background-color: #efefef;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+/* main body */
+
+.main {
+  overflow: auto;
+  height: -webkit-fill-available;
+  padding-bottom: 330px;
+}
+
+/* footer */
+.form_send_parent {
+  position: fixed;
+  bottom: 0;
+  width: 370px;
+  padding: 16px;
+  background: white;
+}
+
+.form_send {
+  border-radius: 22px;
+  border-color: #dbdbdb;
+  border-style: solid;
+  border-width: 0.8px;
+
+  padding-left: 11px;
+  padding-right: 16px;
+}
+
+.submit_button {
+  color: #0095f6;
+}
+
+#isi_pesan {
+  box-shadow: none !important;
+}
+
+.chat_blue {
+  color: white;
+  background-color: #3797f0;
+  border-radius: 18px;
+  padding: 7px 12px;
+  width: max-content;
+  float: right;
+  clear: both;
+
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.chat_grey {
+  color: #262626;
+  background-color: #efefef;
+  border-radius: 18px;
+  padding: 7px 12px;
+  width: max-content;
+
+  max-width: 70%;
+  word-wrap: break-word;
+
+  clear: both;
+}
+
+.ts_blue {
+  float: right;
+  clear: both;
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 500;
+  color: #65676b;
+}
+
+.ts_grey {
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 500;
+  color: #65676b;
+}
